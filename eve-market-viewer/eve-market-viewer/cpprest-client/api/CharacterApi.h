@@ -22,13 +22,13 @@
 
 #include "../ApiClient.h"
 
-#include "Bad_request.h"
-#include "Error_limited.h"
-#include "Forbidden.h"
-#include "Gateway_timeout.h"
-#include "Internal_server_error.h"
-#include "Object.h"
-#include "Service_unavailable.h"
+#include "../model/Bad_request.h"
+#include "../model/Error_limited.h"
+#include "../model/Forbidden.h"
+#include "../model/Gateway_timeout.h"
+#include "../model/Internal_server_error.h"
+#include "../Object.h"
+#include "../model/Service_unavailable.h"
 #include "Unauthorized.h"
 #include <vector>
 #include <cpprest/details/basic_types.h>
