@@ -18,5 +18,124 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cpprest-client\ApiClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpprest-client\ApiConfiguration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpprest-client\ApiException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpprest-client\Object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpprest-client\model\Bad_request.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpprest-client\model\Error_limited.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpprest-client\model\Forbidden.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpprest-client\model\Gateway_timeout.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpprest-client\model\Internal_server_error.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpprest-client\model\Service_unavailable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpprest-client\model\Unauthorized.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpprest-client\api\CharacterApi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpprest-client\HttpContent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpprest-client\JsonBody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpprest-client\ModelBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpprest-client\MultipartFormData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpprest-client\api\AssetsApi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpprest-client\api\MarketApi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cpprest-client\ApiClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpprest-client\ApiConfiguration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpprest-client\ApiException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpprest-client\Object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpprest-client\model\Bad_request.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpprest-client\model\Error_limited.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpprest-client\model\Forbidden.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpprest-client\model\Gateway_timeout.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpprest-client\model\Internal_server_error.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpprest-client\model\Service_unavailable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpprest-client\model\Unauthorized.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpprest-client\api\CharacterApi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpprest-client\HttpContent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpprest-client\IHttpBody.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpprest-client\JsonBody.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpprest-client\ModelBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpprest-client\MultipartFormData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpprest-client\api\AssetsApi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpprest-client\api\MarketApi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

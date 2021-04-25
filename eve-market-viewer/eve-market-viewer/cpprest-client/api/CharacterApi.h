@@ -21,19 +21,11 @@
 
 
 #include "../ApiClient.h"
-
-#include "../model/Bad_request.h"
-#include "../model/Error_limited.h"
-#include "../model/Forbidden.h"
-#include "../model/Gateway_timeout.h"
-#include "../model/Internal_server_error.h"
 #include "../Object.h"
-#include "../model/Service_unavailable.h"
-#include "Unauthorized.h"
 #include <vector>
 #include <cpprest/details/basic_types.h>
-
 #include <boost/optional.hpp>
+
 
 namespace io {
 namespace swagger {

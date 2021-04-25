@@ -26,7 +26,7 @@
 
 #include <cpprest/details/basic_types.h>
 #include <cpprest/http_msg.h>
-
+#undef U
 
 namespace io {
 namespace swagger {

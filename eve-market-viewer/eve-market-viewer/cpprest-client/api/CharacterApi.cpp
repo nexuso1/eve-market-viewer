@@ -12,9 +12,9 @@
 
 
 #include "CharacterApi.h"
-#include "IHttpBody.h"
-#include "JsonBody.h"
-#include "MultipartFormData.h"
+#include "../IHttpBody.h"
+#include "../JsonBody.h"
+#include "../MultipartFormData.h"
 
 #include <unordered_set>
 
@@ -138,7 +138,7 @@ pplx::task<std::shared_ptr<Object>> CharacterApi::getCharactersCharacterId(int32
     })
     .then([=](utility::string_t response)
     {
-        std::shared_ptr<Object> result(nullptr);
+        std::shared_ptr<Object> result(new Object); // Was nullptr for some reason
 
         if(responseHttpContentType == utility::conversions::to_string_t("application/json"))
         {
@@ -1691,7 +1691,7 @@ pplx::task<std::vector<std::shared_ptr<Object>>> CharacterApi::postCharactersAff
     {
         requestHttpContentType = utility::conversions::to_string_t("multipart/form-data");
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
-        multipart->add(ModelBase::toHttpContent("characters", characters));
+        multipart->add(ModelBase::toHttpContent(utility::conversions::to_string_t( "characters"), characters));
 
         httpBody = multipart;
         requestHttpContentType += utility::conversions::to_string_t("; boundary=") + multipart->getBoundary();
@@ -1831,7 +1831,7 @@ pplx::task<float> CharacterApi::postCharactersCharacterIdCspa(int32_t characterI
     {
         requestHttpContentType = utility::conversions::to_string_t("multipart/form-data");
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
-        multipart->add(ModelBase::toHttpContent("characters", characters));
+        multipart->add(ModelBase::toHttpContent(utility::conversions::to_string_t("characters"), characters));
 
         httpBody = multipart;
         requestHttpContentType += utility::conversions::to_string_t("; boundary=") + multipart->getBoundary();

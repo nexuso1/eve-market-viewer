@@ -88,10 +88,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Boost\include\boost-1_76</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Boost\lib;C:\Users\Samo\source\repos\NewRepo2\eve-market-viewer\eve-market-viewer\cpprest-client\api;C:\Users\Samo\source\repos\NewRepo2\eve-market-viewer\eve-market-viewer\cpprest-client;C:\Users\Samo\source\repos\NewRepo2\eve-market-viewer\eve-market-viewer\cpprest-client\model</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -139,7 +141,48 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cpprest-client\ApiClient.cpp" />
+    <ClCompile Include="cpprest-client\ApiConfiguration.cpp" />
+    <ClCompile Include="cpprest-client\ApiException.cpp" />
+    <ClCompile Include="cpprest-client\api\AssetsApi.cpp" />
+    <ClCompile Include="cpprest-client\api\CharacterApi.cpp" />
+    <ClCompile Include="cpprest-client\api\MarketApi.cpp" />
+    <ClCompile Include="cpprest-client\HttpContent.cpp" />
+    <ClCompile Include="cpprest-client\JsonBody.cpp" />
+    <ClCompile Include="cpprest-client\ModelBase.cpp" />
+    <ClCompile Include="cpprest-client\model\Bad_request.cpp" />
+    <ClCompile Include="cpprest-client\model\Error_limited.cpp" />
+    <ClCompile Include="cpprest-client\model\Forbidden.cpp" />
+    <ClCompile Include="cpprest-client\model\Gateway_timeout.cpp" />
+    <ClCompile Include="cpprest-client\model\Internal_server_error.cpp" />
+    <ClCompile Include="cpprest-client\model\Service_unavailable.cpp" />
+    <ClCompile Include="cpprest-client\model\Unauthorized.cpp" />
+    <ClCompile Include="cpprest-client\MultipartFormData.cpp" />
+    <ClCompile Include="cpprest-client\Object.cpp" />
+    <ClCompile Include="Interface.cpp" />
     <ClCompile Include="Source.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cpprest-client\ApiClient.h" />
+    <ClInclude Include="cpprest-client\ApiConfiguration.h" />
+    <ClInclude Include="cpprest-client\ApiException.h" />
+    <ClInclude Include="cpprest-client\api\AssetsApi.h" />
+    <ClInclude Include="cpprest-client\api\CharacterApi.h" />
+    <ClInclude Include="cpprest-client\api\MarketApi.h" />
+    <ClInclude Include="cpprest-client\HttpContent.h" />
+    <ClInclude Include="cpprest-client\IHttpBody.h" />
+    <ClInclude Include="cpprest-client\JsonBody.h" />
+    <ClInclude Include="cpprest-client\ModelBase.h" />
+    <ClInclude Include="cpprest-client\model\Bad_request.h" />
+    <ClInclude Include="cpprest-client\model\Error_limited.h" />
+    <ClInclude Include="cpprest-client\model\Forbidden.h" />
+    <ClInclude Include="cpprest-client\model\Gateway_timeout.h" />
+    <ClInclude Include="cpprest-client\model\Internal_server_error.h" />
+    <ClInclude Include="cpprest-client\model\Service_unavailable.h" />
+    <ClInclude Include="cpprest-client\model\Unauthorized.h" />
+    <ClInclude Include="cpprest-client\MultipartFormData.h" />
+    <ClInclude Include="cpprest-client\Object.h" />
+    <ClInclude Include="Interface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
