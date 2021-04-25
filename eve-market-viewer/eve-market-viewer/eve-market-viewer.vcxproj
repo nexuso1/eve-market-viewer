@@ -159,8 +159,10 @@
     <ClCompile Include="cpprest-client\model\Unauthorized.cpp" />
     <ClCompile Include="cpprest-client\MultipartFormData.cpp" />
     <ClCompile Include="cpprest-client\Object.cpp" />
+    <ClCompile Include="InfoClasses.cpp" />
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="UniverseInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cpprest-client\ApiClient.h" />
@@ -182,7 +184,9 @@
     <ClInclude Include="cpprest-client\model\Unauthorized.h" />
     <ClInclude Include="cpprest-client\MultipartFormData.h" />
     <ClInclude Include="cpprest-client\Object.h" />
+    <ClInclude Include="InfoClasses.h" />
     <ClInclude Include="Interface.h" />
+    <ClInclude Include="UniverseInfo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

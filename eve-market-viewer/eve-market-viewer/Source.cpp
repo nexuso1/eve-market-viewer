@@ -6,7 +6,7 @@
 #include "cpprest-client/api/MarketApi.h"
 #include "cpprest-client/api/AssetsApi.h"
 #include "cpprest-client/api/UniverseApi.h"
-
+#include "Interface.h"
 
 using namespace io::swagger::client::api;
 using namespace utility::conversions;
@@ -34,6 +34,8 @@ void init() {
 	auto market_api = make_shared<MarketApi>(api_client);
 	auto asset_api = make_shared<AssetsApi>(api_client);
 	auto universe_api = make_shared<UniverseApi>(api_client);
+	auto character_api = make_shared<CharacterApi>(api_client);
+	Interface api_interface()
 }
 
 
