@@ -147,6 +147,7 @@
     <ClCompile Include="cpprest-client\api\AssetsApi.cpp" />
     <ClCompile Include="cpprest-client\api\CharacterApi.cpp" />
     <ClCompile Include="cpprest-client\api\MarketApi.cpp" />
+    <ClCompile Include="cpprest-client\api\UniverseApi.cpp" />
     <ClCompile Include="cpprest-client\HttpContent.cpp" />
     <ClCompile Include="cpprest-client\JsonBody.cpp" />
     <ClCompile Include="cpprest-client\ModelBase.cpp" />
@@ -159,7 +160,7 @@
     <ClCompile Include="cpprest-client\model\Unauthorized.cpp" />
     <ClCompile Include="cpprest-client\MultipartFormData.cpp" />
     <ClCompile Include="cpprest-client\Object.cpp" />
-    <ClCompile Include="InfoClasses.cpp" />
+    <ClCompile Include="HelperClasses.cpp" />
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
@@ -170,6 +171,7 @@
     <ClInclude Include="cpprest-client\api\AssetsApi.h" />
     <ClInclude Include="cpprest-client\api\CharacterApi.h" />
     <ClInclude Include="cpprest-client\api\MarketApi.h" />
+    <ClInclude Include="cpprest-client\api\UniverseApi.h" />
     <ClInclude Include="cpprest-client\HttpContent.h" />
     <ClInclude Include="cpprest-client\IHttpBody.h" />
     <ClInclude Include="cpprest-client\JsonBody.h" />
@@ -183,7 +185,7 @@
     <ClInclude Include="cpprest-client\model\Unauthorized.h" />
     <ClInclude Include="cpprest-client\MultipartFormData.h" />
     <ClInclude Include="cpprest-client\Object.h" />
-    <ClInclude Include="InfoClasses.h" />
+    <ClInclude Include="HelperClasses.h" />
     <ClInclude Include="Interface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

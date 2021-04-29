@@ -12,9 +12,9 @@
 
 
 #include "AssetsApi.h"
-#include "IHttpBody.h"
-#include "JsonBody.h"
-#include "MultipartFormData.h"
+#include "../IHttpBody.h"
+#include "../JsonBody.h"
+#include "../MultipartFormData.h"
 
 #include <unordered_set>
 
@@ -386,7 +386,7 @@ pplx::task<std::vector<std::shared_ptr<Object>>> AssetsApi::postCharactersCharac
     {
         requestHttpContentType = utility::conversions::to_string_t("multipart/form-data");
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
-        multipart->add(ModelBase::toHttpContent("itemIds", itemIds));
+        multipart->add(ModelBase::toHttpContent(utility::conversions::to_string_t("itemIds"), itemIds));
 
         httpBody = multipart;
         requestHttpContentType += utility::conversions::to_string_t("; boundary=") + multipart->getBoundary();
@@ -528,7 +528,7 @@ pplx::task<std::vector<std::shared_ptr<Object>>> AssetsApi::postCharactersCharac
     {
         requestHttpContentType = utility::conversions::to_string_t("multipart/form-data");
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
-        multipart->add(ModelBase::toHttpContent("itemIds", itemIds));
+        multipart->add(ModelBase::toHttpContent(utility::conversions::to_string_t("itemIds"), itemIds));
 
         httpBody = multipart;
         requestHttpContentType += utility::conversions::to_string_t("; boundary=") + multipart->getBoundary();
@@ -670,7 +670,7 @@ pplx::task<std::vector<std::shared_ptr<Object>>> AssetsApi::postCorporationsCorp
     {
         requestHttpContentType = utility::conversions::to_string_t("multipart/form-data");
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
-        multipart->add(ModelBase::toHttpContent("itemIds", itemIds));
+        multipart->add(ModelBase::toHttpContent(utility::conversions::to_string_t("itemIds"), itemIds));
 
         httpBody = multipart;
         requestHttpContentType += utility::conversions::to_string_t("; boundary=") + multipart->getBoundary();
@@ -812,7 +812,7 @@ pplx::task<std::vector<std::shared_ptr<Object>>> AssetsApi::postCorporationsCorp
     {
         requestHttpContentType = utility::conversions::to_string_t("multipart/form-data");
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
-        multipart->add(ModelBase::toHttpContent("itemIds", itemIds));
+        multipart->add(ModelBase::toHttpContent(utility::conversions::to_string_t("itemIds"), itemIds));
 
         httpBody = multipart;
         requestHttpContentType += utility::conversions::to_string_t("; boundary=") + multipart->getBoundary();

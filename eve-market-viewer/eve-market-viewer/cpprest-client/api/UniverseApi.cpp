@@ -12,9 +12,9 @@
 
 
 #include "UniverseApi.h"
-#include "IHttpBody.h"
-#include "JsonBody.h"
-#include "MultipartFormData.h"
+#include "../IHttpBody.h"
+#include "../JsonBody.h"
+#include "../MultipartFormData.h"
 
 #include <unordered_set>
 
@@ -3714,7 +3714,7 @@ pplx::task<std::shared_ptr<Object>> UniverseApi::postUniverseIds(std::vector<uti
             std::vector<web::json::value> jsonArray;
             for( auto& item : names )
             {
-                jsonArray.push_back( item.get() ? item->toJson() : web::json::value::null() );
+                jsonArray.push_back( item.length() > 0 ? web::json::value(item, false) : web::json::value::null() );
                 
             }
             json = web::json::value::array(jsonArray);
@@ -3731,7 +3731,7 @@ pplx::task<std::shared_ptr<Object>> UniverseApi::postUniverseIds(std::vector<uti
             std::vector<web::json::value> jsonArray;
             for( auto& item : names )
             {
-                jsonArray.push_back( item.get() ? item->toJson() : web::json::value::null() );
+                jsonArray.push_back( item.length() > 0 ? web::json::value(item, false) : web::json::value::null() );
                 
             }
             multipart->add(ModelBase::toHttpContent(utility::conversions::to_string_t("names"), web::json::value::array(jsonArray), utility::conversions::to_string_t("application/json")));
@@ -3863,7 +3863,7 @@ pplx::task<std::vector<std::shared_ptr<Object>>> UniverseApi::postUniverseNames(
     {
         requestHttpContentType = utility::conversions::to_string_t("multipart/form-data");
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
-        multipart->add(ModelBase::toHttpContent("ids", ids));
+        multipart->add(ModelBase::toHttpContent(utility::conversions::to_string_t("ids"), ids));
 
         httpBody = multipart;
         requestHttpContentType += utility::conversions::to_string_t("; boundary=") + multipart->getBoundary();

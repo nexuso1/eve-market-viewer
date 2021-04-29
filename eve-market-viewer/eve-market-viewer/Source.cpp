@@ -8,49 +8,42 @@
 #include "cpprest-client/api/UniverseApi.h"
 #include "Interface.h"
 
+#define PROGRAM_VERSION "0.0.1"
+
 using namespace io::swagger::client::api;
 using namespace utility::conversions;
 using namespace std;
 
-shared_ptr<ApiClient>& setup_api_client() {
-	/// <summary>
-	/// Sets up the the basic API client for interaction with ESI
-	/// </summary>
-	/// <returns>A shared pointer to the client</returns>
-	utility::string_t base_URL = to_string_t("https://esi.evetech.net/latest/");
-
-	auto api_config = make_shared<ApiConfiguration>();
-	api_config->setBaseUrl(base_URL);
-	api_config->setUserAgent(to_string_t("User-Agent"));
-
-	auto api_client = make_shared<ApiClient>(api_config);
-
-	api_client->setConfiguration(api_config);
-	return api_client;
+void print_welcome(ostream& out) {
+	out << "Eve Market Viewer ver " << PROGRAM_VERSION << endl;
+	out << "For usage type --help" << endl;
 }
 
-void init() {
-	auto api_client = setup_api_client();
-	auto market_api = make_shared<MarketApi>(api_client);
-	auto asset_api = make_shared<AssetsApi>(api_client);
-	auto universe_api = make_shared<UniverseApi>(api_client);
-	auto character_api = make_shared<CharacterApi>(api_client);
-	Interface api_interface()
-}
-
-
-int main() {
-	utility::string_t base_URL = to_string_t("https://esi.evetech.net/latest/");
-
-	auto api_config = make_shared<ApiConfiguration>();
-	api_config->setBaseUrl(base_URL);
-	api_config->setUserAgent(to_string_t("User-Agent"));
-
-	auto api_client = make_shared<ApiClient>(api_config);
+void parse_command(stringstream& stream, MainInterface& main_interface) {
+	string first;
+	stream >> first;
 	
-	api_client->setConfiguration(api_config);
-	auto character_api = CharacterApi(api_client);
-	auto response = character_api.getCharactersCharacterId(2112625428, to_string_t("tranquility"), to_string_t("None"));
-	auto res = response.get()->toJson();
-	cout << to_utf8string(res.at(to_string_t("name")).serialize()) << endl;
+}
+
+void run(int argc, char* argv[], ostream& out, istream& in) {
+	auto main_interface = MainInterface(out);
+	bool end = false;
+	if (argc < 2) {
+		print_welcome(out);
+		while (!end) {
+			string line;
+			getline(in, line);
+			stringstream stream(line);
+			main_interface.parse_command(stream);
+		}
+	}
+
+	else {
+		// TODO
+	}
+}
+
+
+int main(int argc, char* argv[]) {
+	run(argc, argv, cout, cin);
 }

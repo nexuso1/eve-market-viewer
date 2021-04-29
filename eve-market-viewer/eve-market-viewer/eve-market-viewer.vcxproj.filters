@@ -75,7 +75,10 @@
     <ClCompile Include="Interface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InfoClasses.cpp">
+    <ClCompile Include="cpprest-client\api\UniverseApi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HelperClasses.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -140,7 +143,10 @@
     <ClInclude Include="Interface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InfoClasses.h">
+    <ClInclude Include="cpprest-client\api\UniverseApi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HelperClasses.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
