@@ -210,7 +210,7 @@ void MainInterface::list_orders_parser(string& line) {
 	}
 	
 	else {
-		out_ << "No arguments given" << endl;
+		out_ << "No arguments given/Wrong format" << endl;
 	}
 }
 

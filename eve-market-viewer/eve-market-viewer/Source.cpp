@@ -16,7 +16,7 @@ using namespace std;
 
 void print_welcome(ostream& out) {
 	out << "Eve Market Viewer ver " << PROGRAM_VERSION << endl;
-	out << "For usage type --help" << endl;
+	out << "For usage type help" << endl;
 }
 
 void run(int argc, char* argv[], ostream& out, istream& in) {

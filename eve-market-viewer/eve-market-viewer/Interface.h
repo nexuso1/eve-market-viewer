@@ -69,7 +69,7 @@ public:
 	UniverseInterface(std::unique_ptr<UniverseApi>& universe_api);
 	long get_id_from_name(std::string& name, std::string& type);
 	std::shared_ptr<std::string> get_name_from_id(long id);
-	std::shared_ptr<ItemInfo> get_type_info(long type_id);
+	// std::shared_ptr<ItemInfo> get_type_info(long type_id);
 
 	std::unordered_map<long, std::string> id_to_name_cache_;
 	std::unordered_map<std::string, long> name_to_id_cache_;
