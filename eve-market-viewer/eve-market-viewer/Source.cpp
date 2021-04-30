@@ -19,12 +19,6 @@ void print_welcome(ostream& out) {
 	out << "For usage type --help" << endl;
 }
 
-void parse_command(stringstream& stream, MainInterface& main_interface) {
-	string first;
-	stream >> first;
-	
-}
-
 void run(int argc, char* argv[], ostream& out, istream& in) {
 	auto main_interface = MainInterface(out);
 	bool end = false;
@@ -34,7 +28,7 @@ void run(int argc, char* argv[], ostream& out, istream& in) {
 			string line;
 			getline(in, line);
 			stringstream stream(line);
-			main_interface.parse_command(stream);
+			main_interface.parse_command(stream, line);
 		}
 	}
 
