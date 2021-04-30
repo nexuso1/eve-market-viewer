@@ -3913,7 +3913,7 @@ pplx::task<std::vector<std::shared_ptr<Object>>> UniverseApi::postUniverseNames(
 
             for( auto& item : json.as_array() )
             {
-                std::shared_ptr<Object> itemObj(nullptr);
+                std::shared_ptr<Object> itemObj(new Object);
                 itemObj->fromJson(item);
                 result.push_back(itemObj);
                 
