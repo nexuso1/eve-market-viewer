@@ -29,6 +29,8 @@ public:
 	void parse_command(std::stringstream& stream);
 
 private:
+	void list_orders_parser(std::stringstream& stream);
+	void set_parser(std::stringstream& stream);
 	void create_interfaces();
 	void init();
 	void setup_api_client();
@@ -54,6 +56,7 @@ private:
 class UniverseStorage {
 public:
 	UniverseStorage(std::unique_ptr<UniverseApi>& universe_api);
+	long get_id_from_name(std::string& name, std::string& type);
 
 private:
 	std::unique_ptr<UniverseApi>& universe_api_;
@@ -77,13 +80,11 @@ public:
 		station_id_ = station_id;
 	};
 
-	Orders get_type_orders_region(const std::string& name, int page = 1);
+	// Orders get_type_orders_region(const std::string& name, boost::optional<int> region_id, int page = 1);
 	Orders get_type_orders_region(int item_id, boost::optional<int> region_id, int page);
-	web::json::value get_prices_by_category(int category_id, int page = 1);
-	web::json::value get_type_history(int item_id, int page = 1);
-	web::json::value get_type_history(const std::string& name);
-
-	void print_type_orders(std::ostream& out, web::json::value& orders);
+	// web::json::value get_prices_by_category(int category_id, int page = 1);
+	// web::json::value get_type_history(int item_id, int page = 1);
+	// web::json::value get_type_history(const std::string& name);
 
 private:
 	std::unique_ptr<MarketApi>& market_api_; // Makes the web requests

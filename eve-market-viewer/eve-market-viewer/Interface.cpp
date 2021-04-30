@@ -1,4 +1,6 @@
 #include "Interface.h"
+#include<unordered_map>
+#include<vector>
 
 using namespace io::swagger::client::api;
 using namespace std;
@@ -43,9 +45,109 @@ void MainInterface::create_interfaces() {
 	character_st_ = make_unique<CharacterStorage>(character_api_);
 }
 
+void MainInterface::parse_command(stringstream& stream) {
+	string first;
+	stream >> first;
+	if (first == "list") {
+		list_orders_parser(stream);
+	}
+	else if (first == "set") {
+		set_parser(stream);
+	}
+
+	else {
+		out_ << "Invalid argument. See \"help\" for usage." << endl;
+	}
+}
+
+void MainInterface::set_parser(stringstream& stream) {
+	out_ << "Values set" << endl;
+}
+
+void MainInterface::list_orders_parser(stringstream& stream) {
+	vector<string> commands;
+	string temp;
+	while (stream >> temp) {
+		commands.push_back(temp);
+	}
+
+	long id;
+	long region;
+	string type;
+	if (commands.size() > 0)
+	{
+		try {
+			type = "inventory_types";
+			id = universe_st_->get_id_from_name(commands[0], type);
+		}
+		catch (ApiException e) {
+			out_ << e.what();
+			return;
+		}
+		catch (web::json::json_exception e) {
+			if (e.what() == "Key was not found") {
+				out_ << "Invalid ID" << endl;
+				return;
+			}
+			out_ << e.what();
+			return;
+		}
+		
+		if (commands.size() > 1) {
+			try {
+				string region_name = "";
+				for (int i = 1; i < commands.size() - 1; i++) {
+					region_name += commands[i] + " ";
+				}
+				region_name += commands[commands.size() - 1];
+				type = "regions";
+				long region_id = universe_st_->get_id_from_name(region_name, type);
+				market_st_->get_type_orders_region(id, region_id, 1).print();
+				return;
+			}
+			catch (ApiException e) {
+				e.what();
+				return;
+			}
+			catch (web::json::json_exception e) {
+				if (e.what() == "Key was not found") {
+					out_ << "Invalid ID" << endl;
+					return;
+				}
+				out_ << e.what() << endl;
+				return;
+			}
+		}
+
+		market_st_->get_type_orders_region(id, {}, 1).print();
+	}
+	
+	else {
+		out_ << "No arguments given" << endl;
+	}
+}
+
 UniverseStorage::UniverseStorage(std::unique_ptr<UniverseApi>& universe_api) : universe_api_(universe_api) {};
 
-MarketStorage::MarketStorage(std::unique_ptr<MarketApi>& market_api, MainInterface* main_interface) : market_api_(market_api) {
+long UniverseStorage::get_id_from_name(string& name, string& type) {
+	try {
+		long res = stoi(name);
+		return res;
+	}
+	catch (invalid_argument) {
+		vector<utility::string_t> temp{ to_string_t(name) };
+		auto response = universe_api_->postUniverseIds(temp, {}, {}, {});
+		auto json = response.get()->toJson();
+		try {
+			return json.at(to_string_t(type))[0].at(to_string_t("id")).as_number().to_uint32();
+		}
+		catch (web::json::json_exception e) {
+			throw(e);
+		}
+	}
+}
+
+MarketStorage::MarketStorage(std::unique_ptr<MarketApi>& market_api, MainInterface* main_interface) : market_api_(market_api), main_interface_(main_interface) {
 	set_region();
 	set_system();
 	set_station();
@@ -67,12 +169,8 @@ Orders MarketStorage::get_type_orders_region(int item_id, boost::optional<int> r
 	return Orders(main_interface_->out_, buy_ptr, sell_ptr);
 }
 
-void MarketStorage::print_type_orders(ostream& out, web::json::value& orders) {
-
-}
-
-shared_ptr<web::json::value> get_type_orders_region(const string& name, boost::optional<int> region_id, int page = 1) {
-}
+//shared_ptr<web::json::value> get_type_orders_region(const string& name, boost::optional<int> region_id, int page = 1) {
+//}
 
 AssetStorage::AssetStorage(std::unique_ptr<AssetsApi>& asset_api) : asset_api_(asset_api) {};
 
