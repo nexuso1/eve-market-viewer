@@ -1,0 +1,24 @@
+Usage:
+
+--------------------------------------
+Best used in a large window.
+Name parameters are case insesitive. Can be substituted for IDs.
+A few sample paramters - Location - Jita, Amarr, Hek, Rens, Dodixie (Major Hub Systems)
+		       - The Forge, Heimatar, Domain, Genesis (Regions)
+		       - Items - Gila, Muninn, Astero, Tritanium, Void S, Tremor M, PLEX, Large Shield Booster II
+
+
+list [<location_type>] \"<type_name>\"[\"location_name>\"] - lists currently available market orders of <type_name> in <location_name>,
+							     if no region is provided, lists from the default one.
+							   - avaliable <location_type> - system, station, region
+set <paramater> \"<name>\" - sets the default <parameter> to <name>
+			   - available parameters : - region
+						    - station
+						    - station
+-------------------------------------
+
+
+Defaults:
+-region - The Forge
+- system - Jita
+- station - Jita IV - Moon 4 - Caldari Navy Assembly Plant

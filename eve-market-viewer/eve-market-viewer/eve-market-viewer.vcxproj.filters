@@ -152,5 +152,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="requirements.txt" />
+    <Text Include="help.txt" />
   </ItemGroup>
 </Project>

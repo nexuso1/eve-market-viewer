@@ -190,6 +190,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="requirements.txt" />
+    <Text Include="help.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,5 +1,6 @@
 #include "Interface.h"
 #include<unordered_map>
+#include<fstream>
 #include<vector>
 #include<regex>
 
@@ -33,29 +34,12 @@ void MainInterface::init() {
 
 void MainInterface::print_help() {
 
-	const string help = "Usage:\n \
------------------------------------- -\n \
-Best used in a large window. \n\
-Name parameters are case insesitive. Can be substituted for IDs.\n \
-A few sample paramters - Location - Jita, Amarr, Hek, Rens, Dodixie (Major Hub Systems)\n\
-								  - The Forge, Heimatar, Domain, Genesis (Regions)\n\
-					   - Items	  - Gila, Muninn, Astero, Tritanium, Void S, Tremor M, PLEX, Large Shield Booster II \n\
-\
-list [<location_type>] \"<type_name>\"[\"location_name>\"] - lists currently available market orders of <type_name> in <location_name>,\n \
-														   if no region is provided, lists from the default one.\n \
-														 - avaliable <location_typ> - system, station, region \
-set <paramater> \"<name>\"				- sets the default <parameter> to <name>\n \
-										-available parameters : -region\n \
-										- station\n \
-										- system\n \
-\
---------------------------------------\n \
-\
-Defaults:\n \
--region - The Forge\n \
-- system - Jita\n \
-- station - Jita IV - Moon 4 - Caldari Navy Assembly Plant";
-	out_ << help << endl;
+	string line;
+	ifstream help ("help.txt");
+	while (getline(help, line)) {
+		out_ << line << endl;
+	}
+	out_ << endl;
 }
 
 void MainInterface::setup_apis() {
