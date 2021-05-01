@@ -21,6 +21,9 @@ class MarketInterface;
 class UniverseInterface;
 class Orders;
 
+enum class command_type { system, station };
+enum class id_type { system, region, station, structure };
+
 class MainInterface
 {
 /// <summary>
@@ -58,19 +61,23 @@ private:
 	std::unique_ptr<AssetsApi> asset_api_;
 	std::unique_ptr<CharacterApi> character_api_;
 
-	std::unique_ptr<UniverseInterface> universe_st_;
-	std::unique_ptr<MarketInterface> market_st_;
-	std::unique_ptr<AssetInterface> asset_st_;
-	std::unique_ptr<CharacterInterface> character_st_;
+	std::unique_ptr<UniverseInterface> universe_ifc;
+	std::unique_ptr<MarketInterface> market_ifc;
+	std::unique_ptr<AssetInterface> asset_ifc;
+	std::unique_ptr<CharacterInterface> asset_ifc;
 };
 
 class UniverseInterface {
+	// Interface for interacting with the Universe part of ESI
 public:
+
 	UniverseInterface(std::unique_ptr<UniverseApi>& universe_api);
-	long get_id_from_name(std::string& name, std::string& type);
-	std::shared_ptr<std::string> get_name_from_id(long id);
+	long get_id_from_name(const std::string& name, const std::string& type); // Name to ID
+	std::shared_ptr<std::string> get_name_from_id(const long id); // Returns the name of the object
+	long get_region_id(const long long id, const id_type type); // Gets ID of the region in which the parameter is in
 	// std::shared_ptr<ItemInfo> get_type_info(long type_id);
 
+	// Caches to lessen the server load (although quite a few requests are cached by ESI)
 	std::unordered_map<long, std::string> id_to_name_cache_;
 	std::unordered_map<std::string, long> name_to_id_cache_;
 
@@ -80,7 +87,6 @@ private:
 
 class MarketInterface {
 public:
-	enum class command_type { system, station };
 
 	MarketInterface(std::unique_ptr<MarketApi>& market_api, MainInterface* main_interface);
 	
@@ -100,11 +106,7 @@ public:
 	};
 
 	void parse_orders(std::vector<std::shared_ptr<web::json::value>>& orders, bool buy, int region_id, int item_id);
-
-	shared_ptr<Orders> get_type_orders_system(int item_id, boost::optional<int> system_id);
-	shared_ptr<Orders> get_type_orders_station(int item_id, boost::optional<long> station_id);
-	shared_ptr<Orders> get_type_orders_structure(int item_id, boost::optional<long long> structure_id);
-	shared_ptr<Orders> get_type_orders_region(int item_id, boost::optional<int> region_id);
+	std::shared_ptr<Orders> get_type_orders(int item_id, boost::optional<int> location_id, const id_type type);
 	// web::json::value get_prices_by_category(int category_id, int page = 1);
 	// web::json::value get_type_history(int item_id, int page = 1);
 	// web::json::value get_type_history(const std::string& name);
@@ -118,6 +120,7 @@ private:
 };
 
 class AssetInterface {
+	// TODO: Will be used for the Asset part of the project
 public:
 	AssetInterface(std::unique_ptr<AssetsApi>& asset_api);
 
@@ -127,6 +130,7 @@ private:
 
 
 class CharacterInterface {
+	// TODO: Will be used for the Asset part of the project
 public:
 	CharacterInterface(std::unique_ptr<CharacterApi>& character_api);
 

@@ -928,7 +928,7 @@ pplx::task<std::shared_ptr<Object>> UniverseApi::getUniverseConstellationsConste
     })
     .then([=](utility::string_t response)
     {
-        std::shared_ptr<Object> result(nullptr);
+        std::shared_ptr<Object> result(new Object());
 
         if(responseHttpContentType == utility::conversions::to_string_t("application/json"))
         {
@@ -2587,7 +2587,7 @@ pplx::task<std::shared_ptr<Object>> UniverseApi::getUniverseStationsStationId(in
     })
     .then([=](utility::string_t response)
     {
-        std::shared_ptr<Object> result(nullptr);
+        std::shared_ptr<Object> result(new Object());
 
         if(responseHttpContentType == utility::conversions::to_string_t("application/json"))
         {
@@ -3363,7 +3363,7 @@ pplx::task<std::shared_ptr<Object>> UniverseApi::getUniverseSystemsSystemId(int3
     })
     .then([=](utility::string_t response)
     {
-        std::shared_ptr<Object> result(nullptr);
+        std::shared_ptr<Object> result(new Object());
 
         if(responseHttpContentType == utility::conversions::to_string_t("application/json"))
         {
