@@ -69,10 +69,10 @@ void MainInterface::setup_apis() {
 
 void MainInterface::create_interfaces() {
 	// Create the member interfaces
-	market_ifc = make_unique<MarketInterface>(market_api_, this);
-	universe_ifc = make_unique<UniverseInterface>(universe_api_);
-	asset_ifc = make_unique<AssetInterface>(asset_api_);
-	asset_ifc = make_unique<CharacterInterface>(character_api_);
+	market_ifc_ = make_unique<MarketInterface>(market_api_, this);
+	universe_ifc_ = make_unique<UniverseInterface>(universe_api_);
+	asset_ifc_ = make_unique<AssetInterface>(asset_api_);
+	character_ifc_ = make_unique<CharacterInterface>(character_api_);
 }
 
 void MainInterface::parse_command(stringstream& stream, string& line) {
@@ -134,7 +134,7 @@ void MainInterface::set_parser(stringstream& stream, string& line) {
 		string key_type = it->second;
 		try {
 			// Resolve name to ID
-			id = universe_ifc->get_id_from_name(name, key_type);
+			id = universe_ifc_->get_id_from_name(name, key_type);
 		}
 		catch (ApiException e) {
 			out_ << e.what() << endl;
@@ -148,15 +148,15 @@ void MainInterface::set_parser(stringstream& stream, string& line) {
 		// Call a function based on token,
 		// .compare has inverted logic
 		if (!it->first.compare("region")) {
-			market_ifc->set_region(id);
+			market_ifc_->set_region(id);
 			out_ << ">Region set." << endl;
 		}
 		else if (!it->first.compare("station")) {
-			market_ifc->set_station(id);
+			market_ifc_->set_station(id);
 			out_ << ">Station set." << endl;
 		}
 		else if (!it->first.compare("system")) {
-			market_ifc->set_system(id);
+			market_ifc_->set_system(id);
 			out_ << ">System set." << endl;
 		}
 	}
@@ -192,7 +192,7 @@ shared_ptr<Orders> MarketInterface::get_type_orders(int item_id, boost::optional
 		{ id_type::structure, "location_id"}
 	};
 
-	long region_id = main_interface_->universe_ifc->get_region_id(location_id.get(), type);
+	long region_id = main_interface_->universe_ifc_->get_region_id(location_id.get(), type);
 
 	vector<shared_ptr<web::json::value>> sell_orders;
 	vector<shared_ptr<web::json::value>> buy_orders;
@@ -239,7 +239,7 @@ void MainInterface::list_orders_parser(stringstream& stream, string& line) {
 	{
 		try {
 			type = "inventory_types";
-			id = universe_ifc->get_id_from_name((*commands)[0], type);
+			id = universe_ifc_->get_id_from_name((*commands)[0], type);
 		}
 		catch (ApiException e) {
 			// Bad response from the server
@@ -260,25 +260,25 @@ void MainInterface::list_orders_parser(stringstream& stream, string& line) {
 			try {
 				if (specifier == "region") {
 					type = "regions";
-					long region_id = universe_ifc->get_id_from_name((*commands)[1], type);
-					market_ifc->get_type_orders(id, region_id, id_type::region)->print();
+					long region_id = universe_ifc_->get_id_from_name((*commands)[1], type);
+					market_ifc_->get_type_orders(id, region_id, id_type::region)->print();
 				}
 
 				else if (specifier == "system") {
 					type = "systems";
-					long system_id = universe_ifc->get_id_from_name((*commands)[1], type);
-					market_ifc->get_type_orders(id, system_id, id_type::system)->print();
+					long system_id = universe_ifc_->get_id_from_name((*commands)[1], type);
+					market_ifc_->get_type_orders(id, system_id, id_type::system)->print();
 				}
 
 				else if (specifier == "station") {
 					type = "stations";
-					long system_id = universe_ifc->get_id_from_name((*commands)[1], type);
-					market_ifc->get_type_orders(id, system_id, id_type::station)->print();
+					long system_id = universe_ifc_->get_id_from_name((*commands)[1], type);
+					market_ifc_->get_type_orders(id, system_id, id_type::station)->print();
 				}
 				
 				else if (specifier == "structure") {
 					long long structure_id = stoll((*commands)[1]);
-					market_ifc->get_type_orders(id, structure_id, id_type::system)->print();
+					market_ifc_->get_type_orders(id, structure_id, id_type::system)->print();
 				}
 				
 				return;
@@ -298,24 +298,24 @@ void MainInterface::list_orders_parser(stringstream& stream, string& line) {
 		}
 
 		if (specifier == "region") {
-			market_ifc->get_type_orders(id, {}, id_type::region)->print();
+			market_ifc_->get_type_orders(id, {}, id_type::region)->print();
 		}
 
 		else if (specifier == "system") {
-			market_ifc->get_type_orders(id, {}, id_type::system)->print();
+			market_ifc_->get_type_orders(id, {}, id_type::system)->print();
 		}
 
 		else if (specifier == "station") {
-			market_ifc->get_type_orders(id, {}, id_type::station)->print();
+			market_ifc_->get_type_orders(id, {}, id_type::station)->print();
 		}
 
 		else if (specifier == "strutcture") {
-			market_ifc->get_type_orders(id, {}, id_type::structure)->print();
+			market_ifc_->get_type_orders(id, {}, id_type::structure)->print();
 		}
 
 		else {
 			// Printing default region orders if no valid specifier available
-			market_ifc->get_type_orders(id, {}, id_type::region)->print();
+			market_ifc_->get_type_orders(id, {}, id_type::region)->print();
 		}
 	}
 	
@@ -552,7 +552,7 @@ void MainInterface::print_json_vector(std::vector<std::shared_ptr<web::json::val
 				auto id = json.at(to_string_t(key)).as_number();
 				if (id.is_int32()) {
 					
-					field = universe_ifc->get_name_from_id(id.to_int32());
+					field = universe_ifc_->get_name_from_id(id.to_int32());
 				}
 				else {
 					// TODO: OAuth token required to resolve this ID

@@ -61,10 +61,10 @@ private:
 	std::unique_ptr<AssetsApi> asset_api_;
 	std::unique_ptr<CharacterApi> character_api_;
 
-	std::unique_ptr<UniverseInterface> universe_ifc;
-	std::unique_ptr<MarketInterface> market_ifc;
-	std::unique_ptr<AssetInterface> asset_ifc;
-	std::unique_ptr<CharacterInterface> asset_ifc;
+	std::unique_ptr<UniverseInterface> universe_ifc_;
+	std::unique_ptr<MarketInterface> market_ifc_;
+	std::unique_ptr<AssetInterface> asset_ifc_;
+	std::unique_ptr<CharacterInterface> character_ifc_;
 };
 
 class UniverseInterface {
