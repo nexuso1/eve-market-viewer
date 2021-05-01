@@ -232,8 +232,9 @@ void MainInterface::list_orders_parser(stringstream& stream, string& line) {
 		}
 		catch (web::json::json_exception e) {
 			// Likely a wrong ID
-			if (e.what() == "Key was not found") {
-				out_ << "Invalid ID" << endl;
+			const string temp = "Key not found";
+			if (temp.compare(e.what())) {
+				out_ << "Invalid ID/Name" << endl;
 				return;
 			}
 			out_ << e.what() << endl;
@@ -264,6 +265,12 @@ void MainInterface::list_orders_parser(stringstream& stream, string& line) {
 					long long structure_id = stoll((*commands)[1]);
 					market_ifc_->get_type_orders(id, structure_id, id_type::system)->print();
 				}
+
+				else {
+					type = "regions";
+					long region_id = universe_ifc_->get_id_from_name((*commands)[1], type);
+					market_ifc_->get_type_orders(id, {}, id_type::region)->print();
+				}
 				
 				return;
 			}
@@ -272,8 +279,9 @@ void MainInterface::list_orders_parser(stringstream& stream, string& line) {
 				return;
 			}
 			catch (web::json::json_exception e) {
-				if (e.what() == "Key was not found") {
-					out_ << "Invalid ID" << endl;
+				const string temp = "Key not found";
+				if (!temp.compare(e.what())) {
+					out_ << "Invalid ID/Name" << endl;
 					return;
 				}
 				out_ << e.what() << endl;
