@@ -79,7 +79,7 @@ void MainInterface::parse_command(stringstream& stream, string& line) {
 	string first;
 	stream >> first;
 	if (first == "list") {
-		list_orders_parser(line);
+		list_orders_parser(stream, line);
 	}
 	else if (first == "set") {
 		set_parser(stream, line);
@@ -135,11 +135,11 @@ void MainInterface::set_parser(stringstream& stream, string& line) {
 			id = universe_st_->get_id_from_name(name, key_type);
 		}
 		catch (ApiException e) {
-			out_ << e.what();
+			out_ << e.what() << endl;
 			return;
 		}
 		catch (web::json::json_exception e) {
-			out_ << e.what();
+			out_ << e.what() << endl;;
 			return;
 		}
 		
@@ -160,9 +160,13 @@ void MainInterface::set_parser(stringstream& stream, string& line) {
 	}
 }
 
-void MainInterface::list_orders_parser(string& line) {
+void MainInterface::list_orders_parser(stringstream& stream, string& line) {
 	long id;
+	long region_id;
+	const unordered_set<string> list_specifiers = { "region", "system", "station" };
 	string type;
+	string specifier;
+	stream >> specifier;
 	shared_ptr<vector<string>> commands = get_parameters(line);
 	if (commands->size() > 0)
 	{
@@ -172,7 +176,7 @@ void MainInterface::list_orders_parser(string& line) {
 		}
 		catch (ApiException e) {
 			// Bad response from the server
-			out_ << e.what();
+			out_ << e.what() << endl;
 			return;
 		}
 		catch (web::json::json_exception e) {
@@ -181,15 +185,35 @@ void MainInterface::list_orders_parser(string& line) {
 				out_ << "Invalid ID" << endl;
 				return;
 			}
-			out_ << e.what();
+			out_ << e.what() << endl;
 			return;
 		}
 		
 		if ((*commands).size() > 1) {
 			try {
-				type = "regions";
-				long region_id = universe_st_->get_id_from_name((*commands)[1], type);
-				market_st_->get_type_orders_region(id, region_id).print();
+				if (specifier == "region") {
+					type = "regions";
+					long region_id = universe_st_->get_id_from_name((*commands)[1], type);
+					market_st_->get_type_orders_region(id, region_id)->print();
+				}
+
+				else if (specifier == "system") {
+					type = "systems";
+					long system_id = universe_st_->get_id_from_name((*commands)[1], type);
+					market_st_->get_type_orders_system(id, system_id)->print();
+				}
+
+				else if (specifier == "station") {
+					type = "stations";
+					long system_id = universe_st_->get_id_from_name((*commands)[1], type);
+					market_st_->get_type_orders_system(id, system_id)->print();
+				}
+				
+				else if (specifier == "structure") {
+					long long structure_id = stoll((*commands)[1]);
+					market_st_->get_type_orders_structure(id, structure_id)->print();
+				}
+				
 				return;
 			}
 			catch (ApiException e) {
@@ -206,7 +230,26 @@ void MainInterface::list_orders_parser(string& line) {
 			}
 		}
 
-		market_st_->get_type_orders_region(id, {}).print();
+		if (specifier == "region") {
+			market_st_->get_type_orders_region(id, {})->print();
+		}
+
+		else if (specifier == "system") {
+			market_st_->get_type_orders_system(id, {})->print();
+		}
+
+		else if (specifier == "station") {
+			market_st_->get_type_orders_station(id, {})->print();
+		}
+
+		else if (specifier == "strutcture") {
+			market_st_->get_type_orders_structure(id, {})->print();
+		}
+
+		else {
+			// Printing default region orders if no valid specifier available
+			market_st_->get_type_orders_region(id, {})->print();
+		}
 	}
 	
 	else {
@@ -330,7 +373,7 @@ void MarketInterface::parse_orders(vector<shared_ptr<web::json::value>>& orders,
 	}
 }
 
-Orders MarketInterface::get_type_orders_region(int item_id, boost::optional<int> region_id) {
+shared_ptr<Orders> MarketInterface::get_type_orders_region(int item_id, boost::optional<int> region_id) {
 	// Returns an Orders instance consisting of orders of the items specified, page 1 by default, in the default reagion
 
 	if (!region_id.is_initialized()) {
@@ -343,11 +386,8 @@ Orders MarketInterface::get_type_orders_region(int item_id, boost::optional<int>
 
 	parse_orders(sell_orders, false, region_id.get(), item_id);
 	parse_orders(buy_orders, true, region_id.get(), item_id);
-	return Orders(main_interface_->out_, buy_orders, sell_orders, *main_interface_);
+	return make_shared<Orders>(main_interface_->out_, buy_orders, sell_orders, *main_interface_);
 }
-
-//shared_ptr<web::json::value> get_type_orders_region(const string& name, boost::optional<int> region_id, int page = 1) {
-//}
 
 AssetInterface::AssetInterface(std::unique_ptr<AssetsApi>& asset_api) : asset_api_(asset_api) {};
 

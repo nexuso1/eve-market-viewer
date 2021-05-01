@@ -40,7 +40,7 @@ public:
 	std::shared_ptr<std::vector <std::string>> get_parameters(std::string& params); // Uses regex to parse command parameters
 
 private:
-	void list_orders_parser(std::string& line);
+	void list_orders_parser(std::stringstream& stream, std::string& line);
 	void set_parser(std::stringstream& stream, std::string& line);
 	void create_interfaces();
 	void init();
@@ -80,6 +80,8 @@ private:
 
 class MarketInterface {
 public:
+	enum class command_type { system, station };
+
 	MarketInterface(std::unique_ptr<MarketApi>& market_api, MainInterface* main_interface);
 	
 	inline void set_region(int region_id = 10000002) {
@@ -99,8 +101,10 @@ public:
 
 	void parse_orders(std::vector<std::shared_ptr<web::json::value>>& orders, bool buy, int region_id, int item_id);
 
-	// Orders get_type_orders_region(const std::string& name, boost::optional<int> region_id, int page = 1);
-	Orders get_type_orders_region(int item_id, boost::optional<int> region_id);
+	shared_ptr<Orders> get_type_orders_system(int item_id, boost::optional<int> system_id);
+	shared_ptr<Orders> get_type_orders_station(int item_id, boost::optional<long> station_id);
+	shared_ptr<Orders> get_type_orders_structure(int item_id, boost::optional<long long> structure_id);
+	shared_ptr<Orders> get_type_orders_region(int item_id, boost::optional<int> region_id);
 	// web::json::value get_prices_by_category(int category_id, int page = 1);
 	// web::json::value get_type_history(int item_id, int page = 1);
 	// web::json::value get_type_history(const std::string& name);
