@@ -20,6 +20,7 @@ class CharacterInterface;
 class MarketInterface;
 class UniverseInterface;
 class Orders;
+class Printer;
 
 enum class command_type { system, station };
 enum class id_type { system, region, station, structure };
@@ -32,13 +33,6 @@ class MainInterface
 public:
 	MainInterface(std::ostream& out);
 	void parse_command(std::stringstream& stream, std::string& line);
-	void print_help();
-	void print_json_vector(std::vector<std::shared_ptr<web::json::value>>& vec,
-		const std::list<std::pair<std::string, std::string>>& descriptions,
-		const std::unordered_set<std::string>& id_fields,
-		int width = 20);
-	void print_line(const std::list<std::pair<std::string, std::string>>& descriptions, int width);
-	void print_head(const std::list<std::pair<std::string, std::string>>& descriptions, int width);
 	bool is_id(const std::unordered_set<std::string>& id_fields, const std::string& key);
 	std::shared_ptr<std::vector <std::string>> get_parameters(std::string& params); // Uses regex to parse command parameters
 
@@ -51,6 +45,8 @@ private:
 	void setup_apis();
 
 	friend class MarketInterface;
+	friend class Printer;
+	friend class Orders;
 
 	std::ostream& out_;
 
@@ -65,6 +61,7 @@ private:
 	std::unique_ptr<MarketInterface> market_ifc_;
 	std::unique_ptr<AssetInterface> asset_ifc_;
 	std::unique_ptr<CharacterInterface> character_ifc_;
+	std::unique_ptr<Printer> printer_;
 };
 
 class UniverseInterface {
@@ -75,7 +72,7 @@ public:
 	long get_id_from_name(const std::string& name, const std::string& type); // Name to ID
 	std::shared_ptr<std::string> get_name_from_id(const long id); // Returns the name of the object
 	long get_region_id(const long long id, const id_type type); // Gets ID of the region in which the parameter is in
-	// std::shared_ptr<ItemInfo> get_type_info(long type_id);
+	std::shared_ptr<web::json::value> get_type_info(long type_id);
 
 	// Caches to lessen the server load (although quite a few requests are cached by ESI)
 	std::unordered_map<long, std::string> id_to_name_cache_;
@@ -128,7 +125,6 @@ private:
 	std::unique_ptr<AssetsApi>& asset_api_;
 };
 
-
 class CharacterInterface {
 	// TODO: Will be used for the Asset part of the project
 public:
@@ -138,6 +134,25 @@ private:
 	std::unique_ptr<CharacterApi>& character_api_;
 };
 
+class Printer {
+	// Used for printing to console
+
+public:
+	Printer(std::ostream& out, MainInterface& main_ifc) : out_(out), main_ifc_(main_ifc) {};
+	void print_help();
+	void print_description(std::shared_ptr<web::json::value> &json);
+	void print_json_vector(std::vector<std::shared_ptr<web::json::value>>& vec,
+		const std::list<std::pair<std::string, std::string>>& descriptions,
+		const std::unordered_set<std::string>& id_fields,
+		int width = 20);
+	void print_line(const std::list<std::pair<std::string, std::string>>& descriptions, int width);
+	void print_line(int length);
+	void print_head(const std::list<std::pair<std::string, std::string>>& descriptions, int width);
+
+private:
+	std::ostream& out_;
+	MainInterface& main_ifc_;
+};
 
 class Orders
 {

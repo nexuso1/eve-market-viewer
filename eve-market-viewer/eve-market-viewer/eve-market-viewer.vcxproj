@@ -161,8 +161,12 @@
     <ClCompile Include="cpprest-client\MultipartFormData.cpp" />
     <ClCompile Include="cpprest-client\Object.cpp" />
     <ClCompile Include="HelperClasses.cpp" />
-    <ClCompile Include="Interface.cpp" />
+    <ClCompile Include="MainInterface.cpp" />
+    <ClCompile Include="MarketInterface.cpp" />
+    <ClCompile Include="Orders.cpp" />
+    <ClCompile Include="Printer.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="UniverseInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cpprest-client\ApiClient.h" />

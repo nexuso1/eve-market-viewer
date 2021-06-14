@@ -72,13 +72,25 @@
     <ClCompile Include="cpprest-client\api\MarketApi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Interface.cpp">
+    <ClCompile Include="MainInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cpprest-client\api\UniverseApi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HelperClasses.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MarketInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UniverseInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Orders.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Printer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

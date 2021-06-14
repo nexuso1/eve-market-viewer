@@ -1,0 +1,3 @@
+0ae5b0cb1d754a2f87bf2d4fc8e23f50
+ibhqopm0Kr4Bediz7PvppNuu3tiGbjnTQsHVHf3r
+eveauth-app://callback/
