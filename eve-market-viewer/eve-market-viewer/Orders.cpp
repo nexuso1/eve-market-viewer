@@ -29,7 +29,7 @@ void Orders::sort() {
 	std::sort(sell_orders_json_.begin(), sell_orders_json_.end(), compare_orders_price_ascending);
 }
 
-void Orders::sort(std::vector<std::shared_ptr<web::json::value>>& orders, sort_type type, sort_by field) {
+void Orders::sort(sort_type type, sort_by field) {
 	// TODO
 }
 

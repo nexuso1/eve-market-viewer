@@ -33,8 +33,6 @@ void MainInterface::setup_api_client() {
 void MainInterface::setup_apis() {
 	// Sets up the various API classes for interacting
 	// with ESI
-	asset_api_ = make_unique<AssetsApi>(api_client_);
-	character_api_ = make_unique<CharacterApi>(api_client_);
 	market_api_ = make_unique<MarketApi>(api_client_);
 	universe_api_ = make_unique<UniverseApi>(api_client_);
 	search_api_ = make_unique<SearchApi>(api_client_);
@@ -44,8 +42,6 @@ void MainInterface::create_interfaces() {
 	// Create the member interfaces
 	market_ifc_ = make_unique<MarketInterface>(market_api_, this);
 	universe_ifc_ = make_unique<UniverseInterface>(universe_api_, this);
-	asset_ifc_ = make_unique<AssetInterface>(asset_api_);
-	character_ifc_ = make_unique<CharacterInterface>(character_api_);
 	search_ifc_ = make_unique<SearchInterface>(search_api_);
 }
 
@@ -285,10 +281,6 @@ void MainInterface::history_parser(std::stringstream& stream, std::string& line)
 		}
 	}
 }
-
-AssetInterface::AssetInterface(std::unique_ptr<AssetsApi>& asset_api) : asset_api_(asset_api) {};
-
-CharacterInterface::CharacterInterface(std::unique_ptr<CharacterApi>& character_api) : character_api_(character_api) {};
 
 bool MainInterface::is_id(const std::unordered_set<std::string>& id_fields, const string& key) {
 	auto it = id_fields.find(key);

@@ -8,17 +8,21 @@ UniverseInterface::UniverseInterface(std::unique_ptr<UniverseApi>& universe_api,
 	universe_api_(universe_api), main_interface_(main_interface) {};
 
 shared_ptr<string> UniverseInterface::get_name_from_id(long id) {
+	// Fetches the name of the type with ID id
 	auto it = id_to_name_cache_.find(id);
 	if (it != id_to_name_cache_.end()) {
+		// Check cache first
 		return make_shared<string>(id_to_name_cache_[id]);
 	}
 
 	else {
 		vector<int> temp{ id };
-		auto response = universe_api_->postUniverseNames(temp, {});
+		auto response = universe_api_->postUniverseNames(temp, {}); // post to ESI
 		auto json = response.get()[0]->toJson();
 		try {
-			auto res = to_utf8string(json.at(to_string_t("name")).as_string());
+			auto res = to_utf8string(json.at(to_string_t("name")).as_string()); // Extract the name
+			
+			// Add to cache
 			name_to_id_cache_[res] = id;
 			id_to_name_cache_[id] = res;
 			return make_shared<string>(res);
@@ -33,6 +37,7 @@ shared_ptr<string> UniverseInterface::get_name_from_id(long id) {
 }
 
 shared_ptr<web::json::value>  UniverseInterface::get_type_info(long type_id) {
+	// Fetch the info of this type
 	auto response = universe_api_->getUniverseTypesTypeId(type_id, {}, {}, {}, {});
 	return make_shared<web::json::value>(response.get()->toJson());
 }

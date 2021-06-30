@@ -16,8 +16,6 @@
 
 using namespace io::swagger::client::api;
 
-class AssetInterface;
-class CharacterInterface;
 class MarketInterface;
 class UniverseInterface;
 class SearchInterface;
@@ -59,14 +57,10 @@ private:
 	std::shared_ptr<ApiConfiguration> api_configuration_;
 	std::unique_ptr<MarketApi> market_api_;
 	std::unique_ptr<UniverseApi> universe_api_;
-	std::unique_ptr<AssetsApi> asset_api_;
-	std::unique_ptr<CharacterApi> character_api_;
 	std::unique_ptr<SearchApi> search_api_;
 
 	std::unique_ptr<UniverseInterface> universe_ifc_;
 	std::unique_ptr<MarketInterface> market_ifc_;
-	std::unique_ptr<AssetInterface> asset_ifc_;
-	std::unique_ptr<CharacterInterface> character_ifc_;
 	std::unique_ptr<SearchInterface> search_ifc_;
 	std::unique_ptr<Printer> printer_;
 };
@@ -133,24 +127,6 @@ private:
 	int station_id_; // Current Station (default Jita 4 Moon 4 Caldari Navy Assembly Plant)
 };
 
-class AssetInterface {
-	// TODO: Will be used for the Asset part of the project
-public:
-	AssetInterface(std::unique_ptr<AssetsApi>& asset_api);
-
-private:
-	std::unique_ptr<AssetsApi>& asset_api_;
-};
-
-class CharacterInterface {
-	// TODO: Will be used for the Asset part of the project
-public:
-	CharacterInterface(std::unique_ptr<CharacterApi>& character_api);
-
-private:
-	std::unique_ptr<CharacterApi>& character_api_;
-};
-
 class Printer {
 	// Used for printing to console
 
@@ -175,14 +151,14 @@ private:
 class Orders
 {
 public:
-	enum class sort_by { price, station, system, duration, };
+	enum class sort_by { price, station, system, duration, volume, volume_left};
 	enum class sort_type { ascending, descending };
 
 	Orders(std::ostream& out, std::vector<std::shared_ptr<web::json::value>> buy_order_json,
 		std::vector<std::shared_ptr<web::json::value>> sell_order_json,
 		MainInterface& main_interface);
 	void sort();
-	void sort(std::vector<std::shared_ptr<web::json::value>>& orders, sort_type type, sort_by field);
+	void sort(sort_type type, sort_by field);
 	void print(int width = 20);
 
 private:
