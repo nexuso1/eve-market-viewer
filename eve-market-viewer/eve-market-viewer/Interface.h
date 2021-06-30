@@ -20,6 +20,7 @@ class CharacterInterface;
 class MarketInterface;
 class UniverseInterface;
 class Orders;
+class History;
 class Printer;
 
 enum class command_type { system, station };
@@ -38,15 +39,18 @@ public:
 
 private:
 	void list_orders_parser(std::stringstream& stream, std::string& line);
+	void history_parser(std::stringstream& stream, std::string& line);
 	void set_parser(std::stringstream& stream, std::string& line);
+	void authorize_parser(std::stringstream& stream, std::string& line);
+	void load_keys();
 	void create_interfaces();
-	void init();
 	void setup_api_client();
 	void setup_apis();
 
 	friend class MarketInterface;
 	friend class Printer;
 	friend class Orders;
+	friend class History;
 
 	std::ostream& out_;
 
@@ -102,12 +106,11 @@ public:
 		station_id_ = station_id;
 	};
 
+
 	void parse_orders(std::vector<std::shared_ptr<web::json::value>>& orders, bool buy, int region_id, int item_id);
 	std::shared_ptr<Orders> get_type_orders(int item_id, boost::optional<int> location_id, const id_type type);
+	std::shared_ptr<History> get_type_history(int item_id, boost::optional<int> location_id);
 	// web::json::value get_prices_by_category(int category_id, int page = 1);
-	// web::json::value get_type_history(int item_id, int page = 1);
-	// web::json::value get_type_history(const std::string& name);
-
 private:
 	std::unique_ptr<MarketApi>& market_api_; // Makes the web requests
 	MainInterface* main_interface_;
@@ -144,7 +147,8 @@ public:
 	void print_json_vector(std::vector<std::shared_ptr<web::json::value>>& vec,
 		const std::list<std::pair<std::string, std::string>>& descriptions,
 		const std::unordered_set<std::string>& id_fields,
-		int width = 20);
+		int width = 20,
+		int rows = 50);
 	void print_line(const std::list<std::pair<std::string, std::string>>& descriptions, int width);
 	void print_line(int length);
 	void print_head(const std::list<std::pair<std::string, std::string>>& descriptions, int width);
@@ -180,11 +184,33 @@ private:
 	};
 
 	const std::unordered_set<std::string> id_fields_{
-		"location_id", "system_id"
+		"location_id", "system_id"	
 	};
 
 	std::ostream& out_;
 	MainInterface& main_interface_;
 	std::vector<std::shared_ptr<web::json::value>> buy_orders_json_;
 	std::vector<std::shared_ptr<web::json::value>> sell_orders_json_;
+};
+
+class History {
+public:
+	History(std::ostream& out,
+		std::vector<std::shared_ptr<web::json::value>>& type_history,
+		MainInterface& main_interface) : type_history_(type_history), main_interface_(main_interface), out_(out) {
+	};
+	void print(int width = 20);
+
+private:
+	std::ostream& out_;
+	MainInterface& main_interface_;
+	std::vector<std::shared_ptr<web::json::value>> type_history_;
+	const std::list<std::pair<std::string, std::string>> descriptions_{
+		{"date", "Date"},
+		{"average" , "Average price"},
+		{"highest", "Highest price"},
+		{"lowest", "Lowest price"},
+		{"order_count", "Number of orders"},
+		{"volume", "Volume traded"}
+	};
 };

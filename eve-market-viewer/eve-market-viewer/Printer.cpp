@@ -89,14 +89,20 @@ void Printer::print_description(std::shared_ptr<web::json::value>& json) {
 
 void Printer::print_json_vector(std::vector<std::shared_ptr<web::json::value>>& vec,
 	const std::list<std::pair<std::string, std::string>>& descriptions,
-	const std::unordered_set<std::string>& id_fields,
-	int width) {
+	const std::unordered_set<std::string>& id_fields, 
+	int width,
+	int rows) {
 	// Displays information from the fields specifiend in descriptions_
 	// in a table-like format
 	bool skip = false;
 	string buffer = "";
+	int counter = 0;
 
 	for (auto it = vec.begin(); it != vec.end(); it++) {
+		if (counter >= rows) {
+			break;
+		}
+
 		skip = false;
 		buffer = "";
 		for (auto description_it = descriptions.begin(); description_it != descriptions.end(); description_it++) {
@@ -147,7 +153,8 @@ void Printer::print_json_vector(std::vector<std::shared_ptr<web::json::value>>& 
 		}
 
 		buffer += '\n';
-		cout << buffer;
+		out_ << buffer;
 		print_line(descriptions, width);
+		counter++;
 	}
 }

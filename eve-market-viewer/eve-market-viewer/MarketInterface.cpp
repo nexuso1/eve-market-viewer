@@ -101,3 +101,18 @@ shared_ptr<Orders> MarketInterface::get_type_orders(int item_id, boost::optional
 
 	return make_shared<Orders>(main_interface_->out_, buy_orders, sell_orders, *main_interface_);
 }
+
+shared_ptr<History> MarketInterface::get_type_history(int item_id, boost::optional<int> location_id) {
+	// Gets type history, available only for whole regions
+	if (!location_id.is_initialized()) {
+		// Set to default
+		location_id = region_id_;
+	}
+	vector<shared_ptr<web::json::value>> history;
+	auto response = market_api_->getMarketsRegionIdHistory(location_id.get(), item_id, {}, {}).get();
+	for (auto elem : response) {
+		history.push_back(make_shared<web::json::value>(elem.get()->toJson()));
+	}
+	reverse(history.begin(), history.end());
+	return make_shared<History>(main_interface_->out_, history, *main_interface_);
+}

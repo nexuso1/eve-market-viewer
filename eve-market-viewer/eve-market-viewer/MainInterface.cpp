@@ -3,6 +3,7 @@
 #include<fstream>
 #include<vector>
 #include<regex>
+#include<fstream>
 
 using namespace io::swagger::client::api;
 using namespace std;
@@ -10,7 +11,11 @@ using namespace utility::conversions;
 
 MainInterface::MainInterface(std::ostream& out) : out_(out)
 {
-	init();
+	setup_api_client();
+	setup_apis();
+	create_interfaces();
+	load_keys();
+	printer_ = make_unique<Printer>(out_, *this);
 }
 
 void MainInterface::setup_api_client() {
@@ -24,13 +29,6 @@ void MainInterface::setup_api_client() {
 
 	api_client_ = make_shared<ApiClient>(api_configuration_); // Has to be unique because of other API classes
 	api_client_->setConfiguration(api_configuration_);
-}
-
-void MainInterface::init() {
-	setup_api_client();
-	setup_apis();
-	create_interfaces();
-	printer_ = make_unique<Printer>(out_, *this);
 }
 
 void MainInterface::setup_apis() {
@@ -50,6 +48,13 @@ void MainInterface::create_interfaces() {
 	character_ifc_ = make_unique<CharacterInterface>(character_api_);
 }
 
+void MainInterface::load_keys() {
+	// Reads the private and public keys for OAuth from the key file
+	// First line is public, second one private
+	ifstream keys_file("Keys.txt");
+
+}
+
 void MainInterface::parse_command(stringstream& stream, string& line) {
 	// Resolves the first token of the command, then calls the corresponding
 	// function
@@ -64,6 +69,14 @@ void MainInterface::parse_command(stringstream& stream, string& line) {
 
 	else if (first == "help") {
 		printer_->print_help();
+	}
+
+	else if (first == "authorize") {
+		authorize_parser(stream, line);
+	}
+
+	else if (first == "history") {
+		history_parser(stream, line);
 	}
 
 	else {
@@ -140,7 +153,6 @@ void MainInterface::set_parser(stringstream& stream, string& line) {
 void MainInterface::list_orders_parser(stringstream& stream, string& line) {
 	long id;
 	long region_id;
-	const unordered_set<string> list_specifiers = { "region", "system", "station" };
 	string type;
 	string specifier;
 	stream >> specifier;
@@ -170,7 +182,7 @@ void MainInterface::list_orders_parser(stringstream& stream, string& line) {
 		auto info = universe_ifc_->get_type_info(id);
 		printer_->print_description(info);
 
-		if ((*commands).size() > 1) {
+		if (commands->size() > 1) {
 			try {
 				if (specifier == "region") {
 					type = "regions";
@@ -244,6 +256,54 @@ void MainInterface::list_orders_parser(stringstream& stream, string& line) {
 		out_ << "No arguments given/Wrong format" << endl;
 	}
 }
+
+void MainInterface::history_parser(std::stringstream& stream, std::string& line) {
+	long type_id;
+	long region_id;
+	auto params = *get_parameters(line).get();
+	if (params.size() > 0) {
+		try {
+			type_id = universe_ifc_->get_id_from_name(params[0], "inventory_types");
+			if (params.size() > 1) {
+				region_id = universe_ifc_->get_id_from_name(params[1], "regions");
+				auto info = universe_ifc_->get_type_info(type_id);
+				printer_->print_description(info);
+				auto history = market_ifc_->get_type_history(type_id, region_id);
+				history->print();
+			}
+
+			else {
+				auto info = universe_ifc_->get_type_info(type_id);
+				printer_->print_description(info);
+				market_ifc_->get_type_history(type_id, {})->print();
+			}
+		}
+
+		catch (ApiException e) {
+			// Bad response from the server
+			out_ << e.what() << endl;
+			return;
+		}
+		catch (web::json::json_exception e) {
+			// Likely a wrong ID
+			const string temp = "Key not found";
+			if (temp.compare(e.what())) {
+				out_ << "Invalid ID/Name" << endl;
+				return;
+			}
+			out_ << e.what() << endl;
+			return;
+		}
+	}
+}
+
+void MainInterface::authorize_parser(std::stringstream& stream, std::string& line) {
+	// Authorize a user
+	auto params = *get_parameters(line).get();
+	string name = params[0];
+	out_ << name << endl;
+
+};
 
 AssetInterface::AssetInterface(std::unique_ptr<AssetsApi>& asset_api) : asset_api_(asset_api) {};
 
