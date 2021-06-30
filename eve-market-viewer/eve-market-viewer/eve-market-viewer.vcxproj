@@ -147,6 +147,7 @@
     <ClCompile Include="cpprest-client\api\AssetsApi.cpp" />
     <ClCompile Include="cpprest-client\api\CharacterApi.cpp" />
     <ClCompile Include="cpprest-client\api\MarketApi.cpp" />
+    <ClCompile Include="cpprest-client\api\SearchApi.cpp" />
     <ClCompile Include="cpprest-client\api\UniverseApi.cpp" />
     <ClCompile Include="cpprest-client\HttpContent.cpp" />
     <ClCompile Include="cpprest-client\JsonBody.cpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="cpprest-client\model\Unauthorized.cpp" />
     <ClCompile Include="cpprest-client\MultipartFormData.cpp" />
     <ClCompile Include="cpprest-client\Object.cpp" />
+    <ClCompile Include="SearchInterface.cpp" />
     <ClCompile Include="HelperClasses.cpp" />
     <ClCompile Include="History.cpp" />
     <ClCompile Include="MainInterface.cpp" />
@@ -176,6 +178,7 @@
     <ClInclude Include="cpprest-client\api\AssetsApi.h" />
     <ClInclude Include="cpprest-client\api\CharacterApi.h" />
     <ClInclude Include="cpprest-client\api\MarketApi.h" />
+    <ClInclude Include="cpprest-client\api\SearchApi.h" />
     <ClInclude Include="cpprest-client\api\UniverseApi.h" />
     <ClInclude Include="cpprest-client\HttpContent.h" />
     <ClInclude Include="cpprest-client\IHttpBody.h" />

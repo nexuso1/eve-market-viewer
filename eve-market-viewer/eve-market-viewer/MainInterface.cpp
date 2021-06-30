@@ -14,7 +14,6 @@ MainInterface::MainInterface(std::ostream& out) : out_(out)
 	setup_api_client();
 	setup_apis();
 	create_interfaces();
-	load_keys();
 	printer_ = make_unique<Printer>(out_, *this);
 }
 
@@ -38,21 +37,16 @@ void MainInterface::setup_apis() {
 	character_api_ = make_unique<CharacterApi>(api_client_);
 	market_api_ = make_unique<MarketApi>(api_client_);
 	universe_api_ = make_unique<UniverseApi>(api_client_);
+	search_api_ = make_unique<SearchApi>(api_client_);
 }
 
 void MainInterface::create_interfaces() {
 	// Create the member interfaces
 	market_ifc_ = make_unique<MarketInterface>(market_api_, this);
-	universe_ifc_ = make_unique<UniverseInterface>(universe_api_);
+	universe_ifc_ = make_unique<UniverseInterface>(universe_api_, this);
 	asset_ifc_ = make_unique<AssetInterface>(asset_api_);
 	character_ifc_ = make_unique<CharacterInterface>(character_api_);
-}
-
-void MainInterface::load_keys() {
-	// Reads the private and public keys for OAuth from the key file
-	// First line is public, second one private
-	ifstream keys_file("Keys.txt");
-
+	search_ifc_ = make_unique<SearchInterface>(search_api_);
 }
 
 void MainInterface::parse_command(stringstream& stream, string& line) {
@@ -69,10 +63,6 @@ void MainInterface::parse_command(stringstream& stream, string& line) {
 
 	else if (first == "help") {
 		printer_->print_help();
-	}
-
-	else if (first == "authorize") {
-		authorize_parser(stream, line);
 	}
 
 	else if (first == "history") {
@@ -152,7 +142,6 @@ void MainInterface::set_parser(stringstream& stream, string& line) {
 
 void MainInterface::list_orders_parser(stringstream& stream, string& line) {
 	long id;
-	long region_id;
 	string type;
 	string specifier;
 	stream >> specifier;
@@ -296,14 +285,6 @@ void MainInterface::history_parser(std::stringstream& stream, std::string& line)
 		}
 	}
 }
-
-void MainInterface::authorize_parser(std::stringstream& stream, std::string& line) {
-	// Authorize a user
-	auto params = *get_parameters(line).get();
-	string name = params[0];
-	out_ << name << endl;
-
-};
 
 AssetInterface::AssetInterface(std::unique_ptr<AssetsApi>& asset_api) : asset_api_(asset_api) {};
 

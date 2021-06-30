@@ -12,9 +12,9 @@
 
 
 #include "SearchApi.h"
-#include "IHttpBody.h"
-#include "JsonBody.h"
-#include "MultipartFormData.h"
+#include "../IHttpBody.h"
+#include "../JsonBody.h"
+#include "../MultipartFormData.h"
 
 #include <unordered_set>
 
@@ -302,7 +302,7 @@ pplx::task<std::shared_ptr<Object>> SearchApi::getSearch(std::vector<utility::st
     })
     .then([=](utility::string_t response)
     {
-        std::shared_ptr<Object> result(nullptr);
+        std::shared_ptr<Object> result(new Object());
 
         if(responseHttpContentType == utility::conversions::to_string_t("application/json"))
         {

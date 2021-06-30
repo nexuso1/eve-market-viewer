@@ -4,6 +4,7 @@
 #include "cpprest-client/api/MarketApi.h"
 #include "cpprest-client/api/AssetsApi.h"
 #include "cpprest-client/api/UniverseApi.h"
+#include "cpprest-client/api/SearchApi.h"
 #include "HelperClasses.h"
 
 #include <iostream>
@@ -19,6 +20,7 @@ class AssetInterface;
 class CharacterInterface;
 class MarketInterface;
 class UniverseInterface;
+class SearchInterface;
 class Orders;
 class History;
 class Printer;
@@ -41,13 +43,12 @@ private:
 	void list_orders_parser(std::stringstream& stream, std::string& line);
 	void history_parser(std::stringstream& stream, std::string& line);
 	void set_parser(std::stringstream& stream, std::string& line);
-	void authorize_parser(std::stringstream& stream, std::string& line);
-	void load_keys();
 	void create_interfaces();
 	void setup_api_client();
 	void setup_apis();
 
 	friend class MarketInterface;
+	friend class UniverseInterface;
 	friend class Printer;
 	friend class Orders;
 	friend class History;
@@ -60,11 +61,13 @@ private:
 	std::unique_ptr<UniverseApi> universe_api_;
 	std::unique_ptr<AssetsApi> asset_api_;
 	std::unique_ptr<CharacterApi> character_api_;
+	std::unique_ptr<SearchApi> search_api_;
 
 	std::unique_ptr<UniverseInterface> universe_ifc_;
 	std::unique_ptr<MarketInterface> market_ifc_;
 	std::unique_ptr<AssetInterface> asset_ifc_;
 	std::unique_ptr<CharacterInterface> character_ifc_;
+	std::unique_ptr<SearchInterface> search_ifc_;
 	std::unique_ptr<Printer> printer_;
 };
 
@@ -72,7 +75,7 @@ class UniverseInterface {
 	// Interface for interacting with the Universe part of ESI
 public:
 
-	UniverseInterface(std::unique_ptr<UniverseApi>& universe_api);
+	UniverseInterface(std::unique_ptr<UniverseApi>& universe_api, MainInterface* main_interface);
 	long get_id_from_name(const std::string& name, const std::string& type); // Name to ID
 	std::shared_ptr<std::string> get_name_from_id(const long id); // Returns the name of the object
 	long get_region_id(const long long id, const id_type type); // Gets ID of the region in which the parameter is in
@@ -84,6 +87,17 @@ public:
 
 private:
 	std::unique_ptr<UniverseApi>& universe_api_;
+	MainInterface* main_interface_;
+};
+
+class SearchInterface {
+public:
+	SearchInterface(std::unique_ptr<SearchApi>& search_api) : search_api_(search_api) {};
+	std::shared_ptr<web::json::value> search(const std::string& query, const id_type type);
+	std::shared_ptr<web::json::value> search(const std::string& query, const std::string& type);
+
+private:
+	std::unique_ptr<SearchApi>& search_api_;
 };
 
 class MarketInterface {
