@@ -66,8 +66,12 @@ void MainInterface::parse_command(stringstream& stream, string& line) {
 		history_parser(stream, line);
 	}
 
+	else if (first == "describe") {
+		describe_parser(stream, line);
+	}
+
 	else {
-		out_ << ">Invalid argument. See \"help\" for usage." << endl;
+		out_ << "Invalid argument. See \"help\" for usage." << endl;
 	}
 }
 
@@ -302,7 +306,7 @@ void MainInterface::list_orders_parser(stringstream& stream, string& line) {
 	}
 }
 
-void MainInterface::history_parser(std::stringstream& stream, std::string& line) {
+void MainInterface::history_parser(stringstream& stream, string& line) {
 	long type_id;
 	long region_id;
 	auto params = *get_parameters(line).get();
@@ -339,6 +343,28 @@ void MainInterface::history_parser(std::stringstream& stream, std::string& line)
 			out_ << e.what() << endl;
 			return;
 		}
+	}
+}
+
+void MainInterface::describe_parser(stringstream& stream, string& line) {
+	auto params = *get_parameters(line).get();
+	if (params.size() > 0) {
+		string name = params[0];
+		string type = "inventory_types";
+		long id;
+		try {
+			id = universe_ifc_->get_id_from_name(name, type);
+		}
+		catch (web::json::json_exception e) {
+			out_ << "Invalid name." << endl;
+			return;
+		}
+		auto info = universe_ifc_->get_type_info(id);
+		printer_->print_description(info);
+	}
+
+	else {
+		out_ << "No paramters given." << endl;
 	}
 }
 

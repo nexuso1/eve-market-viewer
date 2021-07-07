@@ -54,6 +54,7 @@ private:
 	void list_orders_parser(std::stringstream& stream, std::string& line);
 	void history_parser(std::stringstream& stream, std::string& line);
 	void set_parser(std::stringstream& stream, std::string& line);
+	void describe_parser(std::stringstream& stream, std::string& line);
 	void create_interfaces();
 	void setup_api_client();
 	void setup_apis();
