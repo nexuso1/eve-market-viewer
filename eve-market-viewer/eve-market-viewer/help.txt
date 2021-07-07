@@ -15,11 +15,11 @@ list [<location_type>] [sort] [<sort_by_field>] [<sort_type>] \"<type_name>\"[\"
                             - available sort_by_field values
                                                             - price
                                                             - duration
-                                                            - location_id - location alphabetically
+                                                            - location_id
                                                             - volume_remain
                                                             - min_volume
                                                             - range
-                                                            - system_id - system name alphabetically
+                                                            - system_id
                                                             - issued - date issued
                             - available sort_type values
                                                         - ascending

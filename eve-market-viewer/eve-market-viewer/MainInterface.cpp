@@ -347,20 +347,28 @@ void MainInterface::history_parser(stringstream& stream, string& line) {
 }
 
 void MainInterface::describe_parser(stringstream& stream, string& line) {
+	// Prints the description of the given types in input. Exact matches only.
+
 	auto params = *get_parameters(line).get();
 	if (params.size() > 0) {
-		string name = params[0];
+		string name;
 		string type = "inventory_types";
 		long id;
-		try {
-			id = universe_ifc_->get_id_from_name(name, type);
+		for (int i = 0; i < params.size(); i++) {
+			// Go through every name and print the description
+			name = params[i];
+			try {
+				id = universe_ifc_->get_id_from_name(name, type);
+			}
+			catch (web::json::json_exception e) {
+				out_ << "Invalid name." << endl;
+				return;
+			}
+			auto info = universe_ifc_->get_type_info(id);
+			printer_->print_description(info);
+			out_ << endl;
 		}
-		catch (web::json::json_exception e) {
-			out_ << "Invalid name." << endl;
-			return;
-		}
-		auto info = universe_ifc_->get_type_info(id);
-		printer_->print_description(info);
+
 	}
 
 	else {
