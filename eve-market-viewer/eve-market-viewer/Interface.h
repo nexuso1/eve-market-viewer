@@ -48,7 +48,13 @@ private:
 	{"min_volume", field_type::numerical },
 	{"range", field_type::range },
 	{"system_id", field_type::numerical },
-	{"issued", field_type::alphabetical }
+	{"issued", field_type::alphabetical },
+	{"average", field_type::numerical},
+	{"date", field_type::alphabetical},
+	{"highest", field_type::numerical},
+	{"lowest", field_type::numerical},
+	{"order_count", field_type::numerical},
+	{"volume", field_type::numerical}
 	};
 
 	void list_orders_parser(std::stringstream& stream, std::string& line);
@@ -214,6 +220,7 @@ public:
 		MainInterface& main_interface) : type_history_(type_history), main_interface_(main_interface), out_(out) {
 	};
 	void print(int width = 20);
+	void sort(const utility::string_t& field, sort_type sort_t, field_type field_t);
 
 private:
 	std::ostream& out_;

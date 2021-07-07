@@ -31,10 +31,6 @@ void run(int argc, char* argv[], ostream& out, istream& in) {
 			main_interface.parse_command(stream, line);
 		}
 	}
-
-	else {
-		// TODO
-	}
 }
 
 

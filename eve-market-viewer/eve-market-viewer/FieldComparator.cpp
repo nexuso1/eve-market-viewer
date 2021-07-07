@@ -40,7 +40,7 @@ bool FieldComparator::operator()(const std::shared_ptr<web::json::value>& val1, 
 		}
 
 		else {
-			return (sort_t_ == sort_type::ascending) ? false : true;
+			return (sort_t_ == sort_type::ascending) ? true : false;
 		}
 	}
 

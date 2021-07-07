@@ -310,21 +310,80 @@ void MainInterface::history_parser(stringstream& stream, string& line) {
 	long type_id;
 	long region_id;
 	auto params = *get_parameters(line).get();
+	string sort; // potential sort keyword
+	string sort_field; // field to sort by
+	string sort_t_string; // sort type from input
+	sort_type sort_t; // sort type enum
+	id_type id_t; // id type enum
+	field_type field_t; // field type enum
+	bool sort_mode = false; // whether to sort the orders at the end
+
 	if (params.size() > 0) {
+		// Might try to sort
+		stream >> sort;
+		if (sort == "sort") {
+			stream >> sort_field;
+			sort_mode = true;
+		}
+
+		if (sort_mode) {
+			transform(sort_field.begin(), sort_field.end(), sort_field.begin(), ::tolower); // normalize format
+			if (sort_field[0] == '\"') {
+				out_ << "Invalid sort mode." << endl;
+				return;
+			}
+
+			try {
+				stream >> sort_t_string;
+				transform(sort_t_string.begin(), sort_t_string.end(), sort_t_string.begin(), ::tolower); // normalize format
+				if (sort_t_string == "ascending") {
+					sort_t = sort_type::ascending;
+				}
+
+				else if (sort_t_string == "descending") {
+					sort_t = sort_type::descending;
+				}
+
+				else {
+					out_ << "Invalid sort order" << endl;
+					return;
+				}
+
+				field_t = mode_to_field_type.at(sort_field);
+			}
+
+			catch (exception e) {
+				out_ << "Wrong input." << endl;
+				return;
+			}
+		}
+
 		try {
-			type_id = universe_ifc_->get_id_from_name(params[0], "inventory_types");
+			type_id = universe_ifc_->get_id_from_name(params[0], "inventory_types"); // convert the name to ID
 			if (params.size() > 1) {
-				region_id = universe_ifc_->get_id_from_name(params[1], "regions");
+				region_id = universe_ifc_->get_id_from_name(params[1], "regions"); // convert region name to ID
+
+				// Print info
 				auto info = universe_ifc_->get_type_info(type_id);
 				printer_->print_description(info);
+
+				// Print history
 				auto history = market_ifc_->get_type_history(type_id, region_id);
+				if (sort_mode) {
+					history->sort(to_string_t(sort_field), sort_t, field_t);
+				}
 				history->print();
 			}
 
 			else {
+				// Default region
 				auto info = universe_ifc_->get_type_info(type_id);
 				printer_->print_description(info);
-				market_ifc_->get_type_history(type_id, {})->print();
+				auto history = market_ifc_->get_type_history(type_id, {});
+				if (sort_mode) {
+					history->sort(to_string_t(sort_field), sort_t, field_t);
+				}
+				history->print();
 			}
 		}
 
