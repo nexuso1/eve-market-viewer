@@ -28,8 +28,24 @@ set <paramater> \"<name>\" - sets the default <parameter> to <name>
                            - available parameters : - region
                                                     - station
                                                     - station
-history <name> [<region_name>] - lists the history of item <name> in region <region_name> in the last 50 days. If no region name is provided,
-                                 default is used.
+history [sort] [<sort_by_field>] [<sort_type>] "<name>" ["<region_name>"] 
+                                                    - lists the history of item <name> in region <region_name> in the last 50 days. 
+                                                      If no region name is provided, default is used.
+                                                    - sort command sorts the columns in <sort_type> order
+                                                    - available sort_by_field values
+                                                                                    - average
+                                                                                    - date
+                                                                                    - highest
+                                                                                    - lowest
+                                                                                    - order_count
+                                                                                    - volume
+                                                    - available sort_type values
+                                                                                - asceding
+                                                                                - descending
+
+describe "<name>"...
+                    - prints the descriptions of types inside "", multiple type names allowed.
+                      Exact matches only.
 -------------------------------------
 
 
