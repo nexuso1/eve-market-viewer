@@ -1,5 +1,6 @@
 #include "Interface.h"
 #include<unordered_map>
+#include<ctime>
 #include<fstream>
 #include<vector>
 #include<regex>
@@ -137,10 +138,68 @@ void MainInterface::set_parser(stringstream& stream, string& line) {
 }
 
 void MainInterface::list_orders_parser(stringstream& stream, string& line) {
-	long id;
-	string type;
-	string specifier;
+	long id; // type id
+	long location_id;
+	string type; // what location type are the orders
+	string specifier; // location type specifier from input
+	string sort; // potential sort keyword
+	string sort_field; // field to sort by
+	string sort_t_string; // sort type from input
+	sort_type sort_t; // sort type enum
+	id_type id_t; // id type enum
+	field_type field_t; // field type enum
+	bool sort_mode = false; // whether to sort the orders at the end
 	stream >> specifier;
+
+	if (specifier == "sort") {
+		// might want to not specify the range, but sort anyway
+		sort_mode = true;
+		stream >> sort_field;
+	}
+
+
+	else {
+		// Specified the range, and might try to sort
+		stream >> sort;
+		if (sort == "sort") {
+			stream >> sort_field;
+			sort_mode = true;
+		}
+	}
+
+	if (sort_mode) {
+		transform(sort_field.begin(), sort_field.end(), sort_field.begin(), ::tolower); // normalize format
+		if (sort_field[0] == '\"') {
+			out_ << "Invalid sort mode." << endl;
+			return;
+		}
+		
+		try {
+			stream >> sort_t_string;
+			transform(sort_t_string.begin(), sort_t_string.end(), sort_t_string.begin(), ::tolower); // normalize format
+			if (sort_t_string == "ascending") {
+				sort_t = sort_type::ascending;
+			}
+
+			else if (sort_t_string == "descending") {
+				sort_t = sort_type::descending;
+			}
+
+			else {
+				out_ << "Invalid sort order" << endl;
+				return;
+			}
+
+			field_t = mode_to_field_type.at(sort_field);
+		}
+
+		catch (exception e) {
+			out_ << "Wrong input." << endl;
+			return;
+		}
+
+	}
+
 	shared_ptr<vector<string>> commands = get_parameters(line);
 	if (commands->size() > 0)
 	{
@@ -171,33 +230,33 @@ void MainInterface::list_orders_parser(stringstream& stream, string& line) {
 			try {
 				if (specifier == "region") {
 					type = "regions";
-					long region_id = universe_ifc_->get_id_from_name((*commands)[1], type);
-					market_ifc_->get_type_orders(id, region_id, id_type::region)->print();
+					location_id = universe_ifc_->get_id_from_name((*commands)[1], type);
+					id_t = id_type::region;
 				}
 
 				else if (specifier == "system") {
 					type = "systems";
-					long system_id = universe_ifc_->get_id_from_name((*commands)[1], type);
-					market_ifc_->get_type_orders(id, system_id, id_type::system)->print();
+					location_id = universe_ifc_->get_id_from_name((*commands)[1], type);
+					id_t = id_type::system;
 				}
 
 				else if (specifier == "station") {
 					type = "stations";
-					long system_id = universe_ifc_->get_id_from_name((*commands)[1], type);
-					market_ifc_->get_type_orders(id, system_id, id_type::station)->print();
-				}
-				
-				else if (specifier == "structure") {
-					long long structure_id = stoll((*commands)[1]);
-					market_ifc_->get_type_orders(id, structure_id, id_type::system)->print();
+					location_id = universe_ifc_->get_id_from_name((*commands)[1], type);
+					id_t = id_type::station;
 				}
 
 				else {
 					type = "regions";
-					long region_id = universe_ifc_->get_id_from_name((*commands)[1], type);
-					market_ifc_->get_type_orders(id, {}, id_type::region)->print();
+					location_id = universe_ifc_->get_id_from_name((*commands)[1], type);
+					id_t = id_type::region;
+					
 				}
-				
+				auto orders = market_ifc_->get_type_orders(id, location_id, id_t);
+				if (sort_mode) {
+					orders->sort(to_string_t(sort_field), sort_t, field_t);
+				}
+				orders->print();
 				return;
 			}
 			catch (ApiException e) {
@@ -216,25 +275,26 @@ void MainInterface::list_orders_parser(stringstream& stream, string& line) {
 		}
 
 		if (specifier == "region") {
-			market_ifc_->get_type_orders(id, {}, id_type::region)->print();
+			id_t = id_type::region;
 		}
 
 		else if (specifier == "system") {
-			market_ifc_->get_type_orders(id, {}, id_type::system)->print();
+			id_t = id_type::system;
 		}
 
 		else if (specifier == "station") {
-			market_ifc_->get_type_orders(id, {}, id_type::station)->print();
-		}
-
-		else if (specifier == "strutcture") {
-			market_ifc_->get_type_orders(id, {}, id_type::structure)->print();
+			id_t = id_type::station;
 		}
 
 		else {
 			// Printing default region orders if no valid specifier available
-			market_ifc_->get_type_orders(id, {}, id_type::region)->print();
+			id_t = id_type::region;
 		}
+		auto orders = market_ifc_->get_type_orders(id, {}, id_t);
+		if (sort_mode) {
+			orders->sort(to_string_t(sort_field), sort_t, field_t);
+		}
+		orders->print();
 	}
 	
 	else {

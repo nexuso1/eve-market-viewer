@@ -29,8 +29,10 @@ void Orders::sort() {
 	std::sort(sell_orders_json_.begin(), sell_orders_json_.end(), compare_orders_price_ascending);
 }
 
-void Orders::sort(sort_type type, sort_by field) {
-	// TODO
+void Orders::sort(const utility::string_t& field, sort_type sort_t, field_type field_t) {
+	FieldComparator cmp(field, field_t, sort_t);
+	std::sort(sell_orders_json_.begin(), sell_orders_json_.end(), cmp);
+	std::sort(buy_orders_json_.begin(), buy_orders_json_.end(), cmp);
 }
 
 void Orders::print(int width) {

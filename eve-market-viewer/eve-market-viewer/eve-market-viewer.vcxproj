@@ -161,6 +161,7 @@
     <ClCompile Include="cpprest-client\model\Unauthorized.cpp" />
     <ClCompile Include="cpprest-client\MultipartFormData.cpp" />
     <ClCompile Include="cpprest-client\Object.cpp" />
+    <ClCompile Include="FieldComparator.cpp" />
     <ClCompile Include="SearchInterface.cpp" />
     <ClCompile Include="HelperClasses.cpp" />
     <ClCompile Include="History.cpp" />

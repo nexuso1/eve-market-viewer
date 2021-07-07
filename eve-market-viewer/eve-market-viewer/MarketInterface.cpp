@@ -25,7 +25,7 @@ void MarketInterface::parse_orders(vector<shared_ptr<web::json::value>>& orders,
 	while (true) {
 		try {
 			auto page = market_api_->getMarketsRegionIdOrders(to_string_t(order_type), region_id, {}, {}, page_n, item_id).get();
-			for (int i = 0; i < page.size(); i++) {
+			for (unsigned int i = 0; i < page.size(); i++) {
 				orders.push_back(make_shared<web::json::value>(page[i]->toJson()));
 			}
 		}
@@ -90,7 +90,7 @@ shared_ptr<Orders> MarketInterface::get_type_orders(int item_id, boost::optional
 		}
 
 		// Same for buy orders
-		for (int i = 0; i < buy_orders.size(); i++) {
+		for (unsigned int i = 0; i < buy_orders.size(); i++) {
 			int order_loc_id = buy_orders[i]->at(to_string_t(fields_it->second)).as_integer();
 			if (order_loc_id != location_id.get()) {
 				buy_orders[i] = buy_orders.back();

@@ -4,19 +4,32 @@ Usage:
 Best used in a large window.
 Name parameters are case insensitive. Can be substituted for IDs.
 A few sample paramters - Location - Jita, Amarr, Hek, Rens, Dodixie (Major Hub Systems)
-								  - The Forge, Heimatar, Domain, Genesis (Regions)
-							      - Items - Gila, Muninn, Astero, Tritanium, Void S, Tremor M, PLEX, Large Shield Booster II
+                                  - The Forge, Heimatar, Domain, Genesis (Regions)
+                                  - Items - Gila, Muninn, Astero, Tritanium, Void S, Tremor M, PLEX, Large Shield Booster II
 
-
-list [<location_type>] \"<type_name>\"[\"location_name>\"] - lists currently available market orders of <type_name> in <location_name>,
-															 if no region is provided, lists from the default one.
-														   - avaliable <location_type> values - system, station, region
+list [<location_type>] [sort] [<sort_by_field>] [<sort_type>] \"<type_name>\"[\"location_name>\"]
+                            - lists currently available market orders of <type_name> in <location_name>,
+                              if no region is provided, lists from the default one.
+                            - avaliable <location_type> values - system, station, region
+                            - sort command sorts both sell and buy orders by <sort_by_field>, in <sort_type> order.
+                            - available sort_by_field values
+                                                            - price
+                                                            - duration
+                                                            - location_id - location alphabetically
+                                                            - volume_remain
+                                                            - min_volume
+                                                            - range
+                                                            - system_id - system name alphabetically
+                                                            - issued - date issued
+                            - available sort_type values
+                                                        - ascending
+                                                        - descending
 set <paramater> \"<name>\" - sets the default <parameter> to <name>
-						   - available parameters : - region
-													- station
-													- station
+                           - available parameters : - region
+                                                    - station
+                                                    - station
 history <name> [<region_name>] - lists the history of item <name> in region <region_name> in the last 50 days. If no region name is provided,
-								 default is used.
+                                 default is used.
 -------------------------------------
 
 
